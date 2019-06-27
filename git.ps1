@@ -74,3 +74,4 @@ $azureuser | convertto-json | out-file 'C:\projects\Sitecore.HabitatHome.Platfor
 
 New-Item C:\projects\COPY_SITECORE_LICENSE_FILE_HERE.txt 
 
+Restart-computer -force
