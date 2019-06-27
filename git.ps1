@@ -15,7 +15,7 @@ Start-Process -FilePath "msiexec" -ArgumentList "/i c:\temp\7zip.msi /quiet /nor
 
 $msbuild = "C:\temp\git.exe"
 $arguments = '/silent /suppressmsgboxes /NORESTART /log="c:\temp\gitinstall.log"'
-start-process $msbuild $arguments 
+start-process $msbuild $arguments -wait
 
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
