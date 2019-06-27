@@ -37,14 +37,14 @@ $dac86 = "https://download.microsoft.com/download/5/E/4/5E4FCC45-4D26-4CBE-8E2D-
             Invoke-WebRequest -Uri $dac86 -OutFile c:\temp\DacFramework2016-x86.msi -Verbose:$VerbosePreference
             Write-Verbose "Download of DACFx x86 successful."
             Write-Verbose "Installing DACFx x86..."
-            Start-Process msiexec.exe -NoNewWindow -Wait -ArgumentList "/i c:\temp\DacFramework2016-x86.msi /quiet /qn /norestart"
+            Start-Process msiexec.exe -NoNewWindow -Wait -ArgumentList "/i c:\temp\DacFramework2016-x86.msi /quiet /qn /norestart /L*V c:\temp\dac86.log"
             Write-Verbose "Installation of DACFx x86 successful."
             
             Write-Verbose "Downloading DACFx x64 from $dac64..."
             Invoke-WebRequest -Uri $dac64 -OutFile c:\temp\DacFramework2016-x64.msi -Verbose:$VerbosePreference
             Write-Verbose "Download of DACFx x64 successful."
             Write-Verbose "Installing DACFx x64..."
-            Start-Process msiexec.exe -NoNewWindow -Wait -ArgumentList "/i c:\temp\DacFramework2016-x64.msi /quiet /qn /norestart"
+            Start-Process msiexec.exe -NoNewWindow -Wait -ArgumentList "/i c:\temp\DacFramework2016-x64.msi /quiet /qn /norestart /L*V c:\temp\dac64.log"
             Write-Verbose "Installation of DACFx x64 successful."
 
 
