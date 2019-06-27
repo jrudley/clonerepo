@@ -1,3 +1,11 @@
+param (
+[string]$locationToDeploy,
+[string]$SitecoreLoginAdminPassword,
+[string]$SqlServerLoginAdminAccount,
+[string]$SqlServerLoginAdminPassword
+)
+
+
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 New-Item -Path c:\temp -ItemType Directory
 invoke-restmethod -uri 'https://www.7-zip.org/a/7z1900-x64.msi' -outfile 'c:\temp\7zip.msi'
@@ -44,5 +52,15 @@ $cakeconfig.DeploymentTarget = 'Azure'
 $cakeconfig | convertto-json | out-file C:\projects\Sitecore.HabitatHome.Platform\cake-config.json -Force
 
 Copy-Item -Path 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\ARM Templates\HabitatHome\xconnect.json' -Destination 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\ARM Templates\HabitatHome\habitatHome_xConnect.json' -Force 
+Copy-Item -Path 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json.example' -Destination 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json'
 
+$azureuser = get-content 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json' | Convertfrom-Json
 
+$azureuser.settings | % {if($_.id -eq 'AzureDeploymentID'){$_.value="schabitat$(get-random -Maximum 10000)"}}
+$azureuser.settings | % {if($_.id -eq 'AzureRegion'){$_.value=$locationToDeploy}}
+$azureuser.settings | % {if($_.id -eq 'SitecoreLoginAdminPassword'){$_.value=$SitecoreLoginAdminPassword}}
+$azureuser.settings | % {if($_.id -eq 'SqlServerLoginAdminAccount'){$_.value=$SqlServerLoginAdminAccount}}
+$azureuser.settings | % {if($_.id -eq 'SqlServerLoginAdminPassword'){$_.value=$SqlServerLoginAdminPassword}}
+$azureuser.settings | % {if($_.id -eq 'SitecoreLicenseXMLPath'){$_.value='c:\\projects\\license.xml'}}
+
+$azureuser | convertto-json | out-file 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json' -Force
