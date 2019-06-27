@@ -72,3 +72,5 @@ $azureuser.settings | % {if($_.id -eq 'SitecoreLicenseXMLPath'){$_.value='c:\pro
 
 $azureuser | convertto-json | out-file 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json' -Force
 
+New-Item C:\projects\COPY_SITECORE_LICENSE_FILE_HERE.txt 
+
