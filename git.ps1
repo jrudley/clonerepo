@@ -14,7 +14,7 @@ invoke-restmethod -uri 'https://github.com/git-for-windows/git/releases/download
 Start-Process -FilePath "msiexec" -ArgumentList "/i c:\temp\7zip.msi /quiet /norestart" -Wait
 
 $msbuild = "C:\temp\git.exe"
-$arguments = '/silent /suppressmsgboxes /log="c:\temp\gitinstall.log"'
+$arguments = '/silent /suppressmsgboxes /NORESTART /log="c:\temp\gitinstall.log"'
 start-process $msbuild $arguments 
 
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
