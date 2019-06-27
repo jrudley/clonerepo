@@ -6,6 +6,8 @@ $msbuild = "C:\temp\git.exe"
 $arguments = '/silent /suppressmsgboxes /log="c:\temp\gitinstall.log"'
 start-process $msbuild $arguments 
 
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+
 New-Item c:\projects -ItemType directory
 Set-Location c:\projects
 git config --system core.longpaths true
