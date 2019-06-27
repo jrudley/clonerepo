@@ -8,6 +8,7 @@ start-process $msbuild $arguments
 
 New-Item c:\projects -ItemType directory
 Set-Location c:\projects
+git config --system core.longpaths true
 git clone https://github.com/Sitecore/Sitecore.HabitatHome.Platform.git
 
 
