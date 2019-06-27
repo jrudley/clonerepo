@@ -1,6 +1,9 @@
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 New-Item -Path c:\temp -ItemType Directory
+invoke-restmethod -uri 'https://www.7-zip.org/a/7z1900-x64.msi' -outfile 'c:\temp\7zip.msi'
 invoke-restmethod -uri 'https://github.com/git-for-windows/git/releases/download/v2.22.0.windows.1/Git-2.22.0-64-bit.exe' -OutFile c:\temp\git.exe
+
+Start-Process -FilePath "msiexec" -ArgumentList "/i c:\temp\7zip.msi /quiet /norestart" -Wait
 
 $msbuild = "C:\temp\git.exe"
 $arguments = '/silent /suppressmsgboxes /log="c:\temp\gitinstall.log"'
@@ -39,4 +42,7 @@ $cakeconfig.Topology = 'scaled'
 $cakeconfig.DeploymentTarget = 'Azure'
 
 $cakeconfig | convertto-json | out-file C:\projects\Sitecore.HabitatHome.Platform\cake-config.json -Force
+
+Copy-Item -Path 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\ARM Templates\HabitatHome\xconnect.json' -Destination 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\ARM Templates\HabitatHome\habitatHome_xConnect.json' -Force 
+
 
