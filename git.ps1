@@ -33,5 +33,10 @@ $dac86 = "https://download.microsoft.com/download/5/E/4/5E4FCC45-4D26-4CBE-8E2D-
             Write-Verbose "Installation of DACFx x86 successful."
 
 
+$cakeconfig = get-content C:\projects\Sitecore.HabitatHome.Platform\cake-config.json | convertfrom-json
 
+$cakeconfig.Topology = 'scaled'
+$cakeconfig.DeploymentTarget = 'Azure'
+
+$cakeconfig | convertto-json | out-file C:\projects\Sitecore.HabitatHome.Platform\cake-config.json -Force
 
