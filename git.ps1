@@ -59,10 +59,10 @@ Copy-Item -Path 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\ARM Template
 Copy-Item -Path 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json.example' -Destination 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json'
 
 $azureuser = get-content 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json' | Convertfrom-Json
-$azureuser.serviceprincipal | % {if($_.id -eq 'azureSubscriptionName'){$_.value=$azureSubscriptionName}}
-$azureuser.serviceprincipal | % {if($_.id -eq 'tenantId'){$_.value=$tenantId}}
-$azureuser.serviceprincipal | % {if($_.id -eq 'applicationId'){$_.value=$applicationId}}
-$azureuser.serviceprincipal | % {if($_.id -eq 'applicationPassword'){$_.value=$applicationPassword}}
+$azureuser.serviceprincipal.azureSubscriptionName=$azureSubscriptionName
+$azureuser.serviceprincipal.tenantId=$tenantId
+$azureuser.serviceprincipal.applicationId=$applicationId
+$azureuser.serviceprincipal.applicationPassword=$applicationPassword
 $azureuser.settings | % {if($_.id -eq 'AzureDeploymentID'){$_.value="schabitat$(get-random -Maximum 10000)"}}
 $azureuser.settings | % {if($_.id -eq 'AzureRegion'){$_.value=$locationToDeploy}}
 $azureuser.settings | % {if($_.id -eq 'SitecoreLoginAdminPassword'){$_.value=$SitecoreLoginAdminPassword}}
