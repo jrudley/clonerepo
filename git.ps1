@@ -2,7 +2,11 @@ param (
 [string]$locationToDeploy,
 [string]$SitecoreLoginAdminPassword,
 [string]$SqlServerLoginAdminAccount,
-[string]$SqlServerLoginAdminPassword
+[string]$SqlServerLoginAdminPassword,
+[string]$azureSubscriptionName,
+[string]$tenantId,
+[string]$applicationId,
+[string]$applicationPassword
 )
 
 
@@ -14,8 +18,8 @@ invoke-restmethod -uri 'https://github.com/git-for-windows/git/releases/download
 Start-Process -FilePath "msiexec" -ArgumentList "/i c:\temp\7zip.msi /quiet /norestart" -Wait
 
 $msbuild = "C:\temp\git.exe"
-$arguments = '/silent /suppressmsgboxes /NORESTART /log="c:\temp\gitinstall.log"'
-start-process $msbuild $arguments -wait
+$arguments = '/silent /suppressmsgboxes /log="c:\temp\gitinstall.log"'
+start-process $msbuild $arguments 
 
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
@@ -55,12 +59,16 @@ Copy-Item -Path 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\ARM Template
 Copy-Item -Path 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json.example' -Destination 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json'
 
 $azureuser = get-content 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json' | Convertfrom-Json
-
+$azureuser.serviceprincipal | % {if($_.id -eq 'azureSubscriptionName'){$_.value=$azureSubscriptionName}}
+$azureuser.serviceprincipal | % {if($_.id -eq 'tenantId'){$_.value=$tenantId}}
+$azureuser.serviceprincipal | % {if($_.id -eq 'applicationId'){$_.value=$applicationId}}
+$azureuser.serviceprincipal | % {if($_.id -eq 'applicationPassword'){$_.value=$applicationPassword}}
 $azureuser.settings | % {if($_.id -eq 'AzureDeploymentID'){$_.value="schabitat$(get-random -Maximum 10000)"}}
 $azureuser.settings | % {if($_.id -eq 'AzureRegion'){$_.value=$locationToDeploy}}
 $azureuser.settings | % {if($_.id -eq 'SitecoreLoginAdminPassword'){$_.value=$SitecoreLoginAdminPassword}}
 $azureuser.settings | % {if($_.id -eq 'SqlServerLoginAdminAccount'){$_.value=$SqlServerLoginAdminAccount}}
 $azureuser.settings | % {if($_.id -eq 'SqlServerLoginAdminPassword'){$_.value=$SqlServerLoginAdminPassword}}
-$azureuser.settings | % {if($_.id -eq 'SitecoreLicenseXMLPath'){$_.value='c:\\projects\\license.xml'}}
+$azureuser.settings | % {if($_.id -eq 'SitecoreLicenseXMLPath'){$_.value='c:\projects\license.xml'}}
 
 $azureuser | convertto-json | out-file 'C:\projects\Sitecore.HabitatHome.Platform\Azure\XP\azureuser-config.json' -Force
+
