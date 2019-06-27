@@ -14,7 +14,7 @@ Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 New-Item c:\projects -ItemType directory
 Set-Location c:\projects
 git config --system core.longpaths true
-git clone https://github.com/Sitecore/Sitecore.HabitatHome.Platform.git
+git clone https://github.com/jrudley/Sitecore.HabitatHome.Platform.git
 
 
 
